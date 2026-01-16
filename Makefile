@@ -1,9 +1,12 @@
 .PHONY: ci fmt vet test
 
-fmt: test -z "$(gofmt -s -l .)"
+fmt: 
+	@test -z "$$(gofmt -s -l .)"
 
-vet: go vet ./...
+vet: 
+	go vet ./...
 
-test: go test ./...
+test: 
+	go test ./...
 
 ci: fmt vet test
