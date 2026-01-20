@@ -1,4 +1,4 @@
-package main
+package book
 
 import (
 	"sync"
@@ -19,4 +19,11 @@ type BookStore struct {
 	mu     sync.RWMutex
 	books  map[string]Book
 	nextID int
+}
+
+func NewBookStore() *BookStore {
+	return &BookStore{
+		books:  make(map[string]Book),
+		nextID: 1,
+	}
 }
