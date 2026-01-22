@@ -7,9 +7,9 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/rushil-arun/book-store/book"
-	"github.com/rushil-arun/book-store/handling"
-	"github.com/rushil-arun/book-store/responses"
+	"github.com/rushil-arun/book-store/server/book"
+	"github.com/rushil-arun/book-store/server/handling"
+	"github.com/rushil-arun/book-store/server/responses"
 )
 
 func main() {

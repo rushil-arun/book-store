@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi"
-	"github.com/rushil-arun/book-store/book"
-	"github.com/rushil-arun/book-store/responses"
+	"github.com/rushil-arun/book-store/server/book"
+	"github.com/rushil-arun/book-store/server/responses"
 )
 
 func (h *BookHandler) Get(w http.ResponseWriter, r *http.Request) {
