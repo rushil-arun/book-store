@@ -12,9 +12,23 @@ import (
 	"github.com/rushil-arun/book-store/server/responses"
 )
 
+func cors(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
 func main() {
 	store := book.NewBookStore()
 	r := chi.NewRouter()
+	r.Use(cors)
 	r.Use(middleware.Logger)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.RequestID)
@@ -33,7 +47,7 @@ func main() {
 		rc.Mount("/books", bookHandler.Routes())
 	})
 
-	addr := "localhost:3000"
+	addr := "localhost:8080"
 	log.Printf("Server on: %s", addr)
 	log.Fatal(http.ListenAndServe(addr, r))
 }
