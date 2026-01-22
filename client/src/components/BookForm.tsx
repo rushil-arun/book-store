@@ -12,15 +12,13 @@ interface BookFormProps {
 const BookForm: React.FC<BookFormProps> = ({ onSubmit, initialBook, onCancel }) => {
   const [title, setTitle] = useState(initialBook?.title || '');
   const [author, setAuthor] = useState(initialBook?.author || '');
-  const [publishedYear, setPublishedYear] = useState(initialBook?.publishedYear?.toString() || '');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ title, author, publishedYear: parseInt(publishedYear) });
+    onSubmit({ title, author });
     if (!initialBook) {
       setTitle('');
       setAuthor('');
-      setPublishedYear('');
     }
   };
 
@@ -38,13 +36,6 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, initialBook, onCancel }) 
         placeholder="Author"
         value={author}
         onChange={(e) => setAuthor(e.target.value)}
-        required
-      />
-      <Input
-        type="number"
-        placeholder="Published Year"
-        value={publishedYear}
-        onChange={(e) => setPublishedYear(e.target.value)}
         required
       />
       <Button type="submit">{initialBook ? 'Update' : 'Add'} Book</Button>

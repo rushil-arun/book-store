@@ -26,7 +26,6 @@ const BookList: React.FC = () => {
           </CardHeader>
           <CardContent>
             <p>Author: {book.author}</p>
-            <p>Published Year: {book.publishedYear}</p>
             <div className="mt-4 space-x-2">
               <Button onClick={() => setEditingBook(book)}>Edit</Button>
               <Button variant="destructive" onClick={() => removeBook(book.id)}>Delete</Button>
