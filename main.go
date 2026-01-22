@@ -30,7 +30,7 @@ func main() {
 
 	r.Route("/api", func(rc chi.Router) {
 		bookHandler := handling.NewBookHandler(store)
-		r.Mount("/books", bookHandler.Routes())
+		rc.Mount("/books", bookHandler.Routes())
 	})
 
 	addr := "localhost:3000"

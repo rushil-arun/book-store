@@ -2,6 +2,7 @@ package handling
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi"
@@ -12,6 +13,7 @@ import (
 func (h *BookHandler) Get(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "bookID")
 	book, ok := h.store.Get(id)
+	fmt.Printf("Get: %t\n", ok)
 	if ok {
 		responses.ResponseJSON(w, http.StatusOK, book)
 		return
@@ -20,6 +22,7 @@ func (h *BookHandler) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *BookHandler) List(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("List")
 	books := h.store.GetAll()
 	responses.ResponseJSON(w, http.StatusOK, books)
 }
