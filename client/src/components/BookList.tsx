@@ -5,10 +5,12 @@ import { useBooks } from '@/context/BookContext';
 import { Book } from '@/services/api';
 import BookForm from './BookForm';
 
+type FormMode = 'add' | 'edit' | null;
+
 const BookList: React.FC = () => {
   const { books, loading, error, removeBook, addBook, editBook } = useBooks();
-  const [editingBook, setEditingBook] = useState<Book | null>(null);
-  const [showAdd, setShowAdd] = useState(false);
+  const [formMode, setFormMode] = useState<FormMode>(null);
+  const [currentBook, setCurrentBook] = useState<Book | null>(null);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -17,42 +19,55 @@ const BookList: React.FC = () => {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Books</h2>
-        <Button onClick={() => setShowAdd(true)}>Add New Book</Button>
+        <Button onClick={() => { setFormMode('add'); setCurrentBook(null); }}>Add New Book</Button>
       </div>
       {books.map(book => (
         <Card key={book.id}>
           <CardHeader>
-            <CardTitle>{book.title}</CardTitle>
+            <CardTitle>{formMode === 'edit' && currentBook?.id === book.id ? 'Edit Book' : book.title}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p>Author: {book.author}</p>
-            <div className="mt-4 space-x-2">
-              <Button onClick={() => setEditingBook(book)}>Edit</Button>
-              <Button variant="destructive" onClick={() => removeBook(book.id)}>Delete</Button>
-            </div>
+            {formMode === 'edit' && currentBook?.id === book.id ? (
+              <BookForm
+                onSubmit={async (bookData) => {
+                  await editBook(currentBook.id, bookData);
+                  setFormMode(null);
+                  setCurrentBook(null);
+                }}
+                initialBook={currentBook || undefined}
+                onCancel={() => {
+                  setFormMode(null);
+                  setCurrentBook(null);
+                }}
+              />
+            ) : (
+              <>
+                <p>Author: {book.author}</p>
+                <div className="mt-4 space-x-2">
+                  <Button onClick={() => { setFormMode('edit'); setCurrentBook(book); }}>Edit</Button>
+                  <Button variant="destructive" onClick={() => removeBook(book.id)}>Delete</Button>
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
       ))}
-      {(showAdd || editingBook) && (
+      {formMode === 'add' && (
         <Card>
           <CardHeader>
-            <CardTitle>{editingBook ? 'Edit Book' : 'Add New Book'}</CardTitle>
+            <CardTitle>Add New Book</CardTitle>
           </CardHeader>
           <CardContent>
             <BookForm
               onSubmit={async (bookData) => {
-                if (editingBook) {
-                  await editBook(editingBook.id, bookData);
-                  setEditingBook(null);
-                } else {
-                  await addBook(bookData);
-                  setShowAdd(false);
-                }
+                await addBook(bookData);
+                setFormMode(null);
+                setCurrentBook(null);
               }}
-              initialBook={editingBook || undefined}
+              initialBook={undefined}
               onCancel={() => {
-                setEditingBook(null);
-                setShowAdd(false);
+                setFormMode(null);
+                setCurrentBook(null);
               }}
             />
           </CardContent>
