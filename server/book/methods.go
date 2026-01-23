@@ -44,6 +44,7 @@ func (s *BookStore) Update(id string, book Book) (Book, bool) {
 		book.UpdatedAt = time.Now()
 		s.books[id] = book
 		s.mu.Unlock()
+		return book, true
 	}
 	s.mu.Unlock()
 	return Book{}, false
