@@ -7,7 +7,7 @@ function App() {
     <BookProvider>
       <div className="min-h-screen bg-gray-50">
         <header className="bg-gray-900 text-white">
-          <div className="container mx-auto px-4 py-4">
+          <div className="px-4 py-4">
             <h1 className="text-2xl font-bold">Book</h1>
           </div>
         </header>
