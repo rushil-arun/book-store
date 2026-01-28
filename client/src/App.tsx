@@ -5,9 +5,15 @@ import BookList from './components/BookList';
 function App() {
   return (
     <BookProvider>
-      <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-8">Book Store</h1>
-        <BookList />
+      <div className="min-h-screen bg-gray-50">
+        <header className="bg-gray-900 text-white">
+          <div className="container mx-auto px-4 py-4">
+            <h1 className="text-2xl font-bold">Book</h1>
+          </div>
+        </header>
+        <main className="container mx-auto p-4">
+          <BookList />
+        </main>
       </div>
     </BookProvider>
   );
